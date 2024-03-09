@@ -16,14 +16,14 @@ const DEFAULT_OPTIONS = {
   confirmButtonTitle: 'OK',
   confirmButtonColor: '#000000',
   barColor: '',
-  otherButtonTitle: 'Cancel',
-  otherButtonColor: '#dedede',
+  otherButtonTitle: '',
+  otherButtonColor: '',
   style: 'success',
   cancellable: true
 }
 
 const SweetAlert = {
-  showAlertWithOptions: (options, callback = () => {}) => {
+  showAlertWithOptions: (options, callback = () => { }) => {
     Native.showAlertWithOptions(options ? options : DEFAULT_OPTIONS, callback)
   },
   dismissAlert: () => Native.hideSweetAlert(),
