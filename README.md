@@ -1,12 +1,12 @@
 # react-native-sweet-alert
 
-Cute, native alert dialogs for React Native — success, error, warning, normal, and progress styles, on both the old and new architecture.
+Cute, native alert dialogs for React Native — success, error, warning, normal, and progress styles, built on the New Architecture (TurboModules).
 
 ![Sweet Alert demo](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif 'Sweet Alert')
 
 [![npm version](https://img.shields.io/npm/v/react-native-sweet-alert?style=for-the-badge&color=blue)](https://www.npmjs.com/package/react-native-sweet-alert)
 [![Monthly downloads](https://img.shields.io/npm/dm/react-native-sweet-alert?style=for-the-badge)](https://www.npmjs.com/package/react-native-sweet-alert)
-[![Architecture](https://img.shields.io/badge/Architecture-Old%20%2B%20New-5f3dc4?style=for-the-badge)](https://reactnative.dev/docs/the-new-architecture/landing-page)
+[![Architecture](<https://img.shields.io/badge/Architecture-New%20(TurboModules)-5f3dc4?style=for-the-badge>)](https://reactnative.dev/docs/the-new-architecture/landing-page)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Supported-3178C6?style=for-the-badge)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f9e44?style=for-the-badge)](LICENSE)
 [![iOS](https://img.shields.io/badge/iOS-15%2B-000000?style=for-the-badge&logo=apple)](https://developer.apple.com/ios/)
@@ -22,10 +22,16 @@ Cute, native alert dialogs for React Native — success, error, warning, normal,
 - 👆 **Cancellable** - optional tap-outside-to-dismiss on any style
 - 🖌️ **Themeable buttons and colors** - per-alert hex colors for confirm/other buttons and the progress bar
 - 🌓 **Dark mode aware** - card background and text adapt automatically on both platforms
-- 🧩 **Old + New Architecture** - a single TurboModule spec, Codegen-generated for both
+- 🧩 **New Architecture (TurboModules)** - a Codegen spec, no legacy bridge fallback
 - 🔒 **Fully typed** - written in TypeScript, no `@types` package needed
 
 ---
+
+## Requirements
+
+- React Native 0.86+ with the **New Architecture** (the only architecture RN
+  itself supports as of 0.82 — there's no legacy-bridge fallback here).
+- iOS 15+, Android API 24+.
 
 ## Installation
 
