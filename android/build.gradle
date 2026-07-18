@@ -1,24 +1,51 @@
-apply plugin: 'com.android.library'
+buildscript {
+  ext.SweetAlert = [
+    kotlinVersion: "2.0.21",
+    minSdkVersion: 24,
+    compileSdkVersion: 36
+  ]
+
+  ext.getExtOrDefault = { prop ->
+    if (rootProject.ext.has(prop)) {
+      return rootProject.ext.get(prop)
+    }
+
+    return SweetAlert[prop]
+  }
+
+  repositories {
+    google()
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath "com.android.tools.build:gradle:8.7.2"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${getExtOrDefault('kotlinVersion')}"
+  }
+}
+
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+apply plugin: "com.facebook.react"
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.0"
+  namespace "com.sweetalert"
 
-    defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion 30
-        versionCode 2
-        versionName "3.0.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
-    }
-    lintOptions {
-       warning 'InvalidPackage'
-    }
+  compileSdkVersion getExtOrDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrDefault("minSdkVersion")
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
 }
 
 dependencies {
-    implementation 'com.facebook.react:react-native:+'
-    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+  implementation "com.facebook.react:react-android"
 }

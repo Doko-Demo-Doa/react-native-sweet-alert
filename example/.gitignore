@@ -1,0 +1,6 @@
+# These folders are generated with prebuild (CNG)
+android/
+ios/
+
+# Ruby bundler local state (CocoaPods Gemfile.lock management)
+.bundle/
