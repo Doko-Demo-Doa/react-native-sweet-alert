@@ -111,33 +111,76 @@ strategy — noted as an open decision below.
       `SweetAlert.mm`) implementing the generated spec surface with
       `TODO`/`not_implemented` bodies — real UI logic is group 2/3
 
-### 2. Android (old + new arch)
-- [ ] Bump `compileSdk`/`targetSdk` to current stable, `minSdk` to a
-      sane modern floor (e.g. 24), Kotlin + AGP versions current
-- [ ] Add missing ABIs (`arm64-v8a`, `x86_64`) alongside existing ones
-- [ ] Port `RNSweetAlertModule.java` → Kotlin, implement generated
-      `NativeSweetAlertSpec`
-- [ ] Split `src/oldarch` / `src/newarch` per the shake/yubikit pattern if
-      the bridge method surface differs between architectures; otherwise
-      keep a single `src/main` implementing the spec directly
-- [ ] Resolve Android alert-UI dependency per open decision #2 (vendor
-      the Kotlin views vs keep external AAR pinned+patched)
-- [ ] Remove `SYSTEM_ALERT_WINDOW` permission unless actually required by
-      the new implementation
+### 2. Android (old + new arch) — ✅ done
+- [x] `compileSdk 36` / `minSdk 24`, Kotlin 2.0.21, AGP 8.7.2, Java 17 —
+      already set by the group-0 scaffold, nothing further to bump
+- [x] ABIs: N/A — this module ships no native C++/NDK code (pure Kotlin),
+      so there's no `ndk.abiFilters` to restrict in the first place. The
+      old missing-`arm64-v8a` problem lived in the third-party AAR /
+      example app, not something this library's own build needs to fix
+- [x] Ported to Kotlin implementing generated `NativeSweetAlertSpec`
+      directly (`SweetAlertModule.kt`) — single `src/main`, no
+      `oldarch`/`newarch` split needed since Codegen generates both
+      old- and new-arch base classes from the same spec for a plain
+      "modules"-type TurboModule with no view manager / event emitter
+      surface (unlike shake, which needed the split for other reasons)
+- [x] Resolved decision #2: **rebuilt the alert UI natively in this repo**
+      rather than forking the unmaintained AAR's Java source. Custom
+      `SweetAlertIconView` (Canvas/Path-drawn success/error/warning glyphs
+      + progress arc, `ValueAnimator`-driven) and `SweetAlertDialog`
+      (programmatic `Dialog`, no XML/resource files) — zero third-party
+      UI dependency, dark-mode aware. This is a legitimate reimplementation,
+      not a pixel-perfect clone of the old library's look — flag if you
+      want the old visuals matched more closely
+- [x] `SYSTEM_ALERT_WINDOW` already absent from the scaffolded
+      `AndroidManifest.xml` — nothing to remove
+- [x] **Validated**: `./gradlew :react-native-sweet-alert:compileDebugKotlin`
+      builds clean (including Codegen schema/artifact generation) with
+      zero errors or warnings, run against the example app's Gradle
+      project
 
-### 3. iOS (old + new arch)
-- [ ] Rewrite bridge: replace `RCT_EXTERN_MODULE`/`RCT_EXTERN_METHOD` +
-      `RCTViewManager` subclass (currently a plain module miscast as a
-      view manager) with generated TurboModule protocol conformance
-- [ ] Clean up `SweetAlertManager.swift`: remove force-unwraps, add
-      proper error/promise rejection paths
-- [ ] Update `ios/Vendor/SweetAlert.swift` for modern Swift + dark mode
-      per open decision #3
-- [ ] Bump podspec deployment target to a current iOS floor (e.g. 15),
-      sync version with `package.json` (fix the 3-way version drift),
-      wire up `install_modules_dependencies(s)` for new-arch
-- [ ] Delete manual bridging-header instructions from README once
-      autolinking + codegen make them unnecessary
+### 3. iOS (old + new arch) — ✅ done
+- [x] Rewrote the bridge as ObjC++ TurboModule conformance
+      (`ios/SweetAlert.h`/`.mm`, `RCT_EXPORT_MODULE(SweetAlert)`,
+      `NativeSweetAlertSpecJSI`) — no more `RCTViewManager` miscasting
+      or manual `RCT_EXTERN_METHOD`
+- [x] `ios/Vendor/SweetAlert.swift` kept and modernized per decision #3:
+      renamed the vendored `UIViewController` class from `SweetAlert` to
+      `SweetAlertView` (required — it would otherwise collide with the
+      new ObjC++ TurboModule class also named `SweetAlert` in the same
+      module), removed force-unwraps, replaced deprecated
+      `UIApplication.shared.keyWindow!` with the connected-scene lookup,
+      added dark-mode-aware colors (dynamic `UIColor { traitCollection in
+      ... }`), added `cancellable` (tap-outside-to-dismiss), and added a
+      `progress` style (determinate/indeterminate arc) that **never
+      existed on iOS before** — the old `SweetAlertManager.swift` had no
+      progress/spinner support at all, only Android did
+    - Added `SweetAlertBridge`, a small `@objc public` wrapper class,
+      since ObjC++ can't call `SweetAlertView.present` directly (it takes
+      a Swift-only `AlertStyle` enum and `Double?`, neither ObjC-bridgeable)
+    - Hit and fixed a real bug worth knowing about: Swift's generated
+      `<Module>-Swift.h` header **only exposes `public`/`open`
+      declarations** — an `internal` (default-access) class or its
+      `@objc` methods are silently omitted from the header with no
+      compiler diagnostic, producing a confusing "undeclared identifier"
+      error on the ObjC++ side pointing at the wrong symbol. Fixed by
+      marking `SweetAlertBridge` and its methods `public`
+- [x] Podspec: deployment target already derives from RN's own
+      `min_ios_version_supported` helper (tracks whatever RN 0.86
+      requires, currently iOS 15.1) — no hardcoded bump needed;
+      `install_modules_dependencies(s)` already present from scaffold.
+      Did **not** add `s.swift_version` — turned out to be unnecessary
+      (matches `react-native-pdf-editor`, which also ships Swift without
+      setting it); CocoaPods/Xcode generate the Swift↔ObjC interface
+      header automatically regardless
+- [x] Bridging-header README cleanup deferred to group 9 (docs pass)
+- [x] **Validated end-to-end**: `pod install` + a full
+      `xcodebuild -workspace SweetAlertExample.xcworkspace -scheme
+      SweetAlertExample -sdk iphonesimulator build` against the example
+      app **succeeded** (arm64 + x86_64 simulator slices), confirming the
+      ObjC++ ⇄ Swift interop, Codegen struct field accessors
+      (`options.title()`, `options.progress()` etc.), and ABI all check
+      out for real, not just by inspection
 
 ### 4. Build tooling
 - [ ] `react-native-builder-bob` config (module + typescript targets,

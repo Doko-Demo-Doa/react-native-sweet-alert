@@ -1,5 +1,6 @@
 package com.sweetalert
 
+import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
@@ -7,17 +8,38 @@ import com.facebook.react.bridge.ReadableMap
 class SweetAlertModule(reactContext: ReactApplicationContext) :
   NativeSweetAlertSpec(reactContext) {
 
+  private var currentDialog: SweetAlertDialog? = null
+
   override fun showAlert(options: ReadableMap, promise: Promise) {
-    // TODO: render the native alert dialog and resolve once dismissed.
-    promise.reject("not_implemented", "showAlert is not yet implemented")
+    val activity = reactApplicationContext.currentActivity
+    if (activity == null) {
+      promise.reject("no_activity", "No current activity to show the alert on")
+      return
+    }
+
+    activity.runOnUiThread {
+      currentDialog?.dismiss()
+      val dialog = SweetAlertDialog(activity, SweetAlertOptions.from(options)) { confirmed ->
+        currentDialog = null
+        val result = Arguments.createMap()
+        result.putBoolean("confirmed", confirmed)
+        promise.resolve(result)
+      }
+      currentDialog = dialog
+      dialog.show()
+    }
   }
 
   override fun dismissAlert() {
-    // TODO: dismiss the currently shown alert, if any.
+    reactApplicationContext.currentActivity?.runOnUiThread {
+      currentDialog?.dismiss()
+    }
   }
 
   override fun setProgress(progress: Double) {
-    // TODO: update the progress indicator of a 'progress' style alert.
+    reactApplicationContext.currentActivity?.runOnUiThread {
+      currentDialog?.updateProgress(progress)
+    }
   }
 
   companion object {
