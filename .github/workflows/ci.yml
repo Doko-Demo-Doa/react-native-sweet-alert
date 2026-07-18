@@ -20,41 +20,51 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Lint files
+        run: pnpm lint
+
+      - name: Check formatting
+        run: pnpm format:check
+
       - name: Typecheck files
-        run: yarn typecheck
+        run: pnpm typecheck
 
   test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
       - name: Run unit tests
-        run: yarn test --maxWorkers=2 --coverage
+        run: pnpm test --maxWorkers=2 --coverage
 
   build-library:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
       - name: Build package
-        run: yarn prepare
+        run: pnpm prepare
 
   build-android:
+    # Disabled by default: prebuild + native Android build eats CI runner
+    # quota fast. Remove this line to re-enable once you have quota to spare
+    # (or want native-build coverage on every push/PR).
+    if: false
     runs-on: ubuntu-latest
 
     env:
@@ -62,22 +72,33 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          android: false
+          tool-cache: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Cache turborepo for Android
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@v6
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turborepo-android-
 
       - name: Check turborepo cache for Android
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:android').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(pnpm exec turbo run build:android --cache-dir=\"${{ env.TURBO_CACHE_DIR }}\" --dry=json)).tasks.find(t => t.task === 'build:android').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -85,7 +106,7 @@ jobs:
 
       - name: Install JDK
         if: env.turbo_cache_hit != 1
-        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -95,9 +116,14 @@ jobs:
         run: |
           /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
 
+      - name: Prebuild expo app for Android
+        if: env.turbo_cache_hit != 1
+        run: |
+          pnpm --filter react-native-sweet-alert-example exec expo prebuild --platform android
+
       - name: Cache Gradle
         if: env.turbo_cache_hit != 1
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@v6
         with:
           path: |
             ~/.gradle/wrapper
@@ -110,9 +136,13 @@ jobs:
         env:
           JAVA_OPTS: '-XX:MaxHeapSize=6g'
         run: |
-          yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+          pnpm exec turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
   build-ios:
+    # Disabled by default: prebuild + native iOS build eats CI runner
+    # quota fast. Remove this line to re-enable once you have quota to spare
+    # (or want native-build coverage on every push/PR).
+    if: false
     runs-on: macos-latest
 
     env:
@@ -123,22 +153,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
       - name: Cache turborepo for iOS
-        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        uses: actions/cache@v6
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-turborepo-ios-
 
       - name: Check turborepo cache for iOS
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(pnpm exec turbo run build:ios --cache-dir=\"${{ env.TURBO_CACHE_DIR }}\" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -146,18 +176,29 @@ jobs:
 
       - name: Use appropriate Xcode version
         if: env.turbo_cache_hit != 1
-        uses: maxim-lobanov/setup-xcode@60606e260d2fc5762a71e64e74b2174e8ea3c8bd # v1.6.0
+        uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: ${{ env.XCODE_VERSION }}
 
-      - name: Install cocoapods
-        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
+      - name: Prebuild expo app for iOS
+        if: env.turbo_cache_hit != 1
         run: |
-          cd example
-          bundle install
-          bundle exec pod repo update --verbose
-          bundle exec pod install --project-directory=ios
+          pnpm --filter react-native-sweet-alert-example exec expo prebuild --platform ios
 
       - name: Build example for iOS
         run: |
-          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+          pnpm exec turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+
+  build-web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Build example for Web
+        run: |
+          pnpm example build:web

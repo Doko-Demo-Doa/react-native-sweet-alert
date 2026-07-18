@@ -261,35 +261,59 @@ SweetAlertExample -sdk iphonesimulator build` against the example
       (arm64 + x86_64). Both platforms actually compile and link the
       library into a real Expo app
 
-### 8. CI / release pipeline
+### 8. CI / release pipeline — ✅ done
 
-- [ ] `.github/actions/setup/action.yml` composite action (pnpm + Node
-      from `.nvmrc`, frozen-lockfile install)
-- [ ] `.github/workflows/ci.yml`: on push/PR to `main` — jobs: `lint`
-      (oxlint + oxfmt check + tsc), `test` (jest), `build-library` (bob
-      build), `build-android` (Expo prebuild + Gradle assemble, turbo
-      cached), `build-ios` (Expo prebuild + xcodebuild, turbo cached)
-- [ ] `.github/workflows/release.yml`: triggered on tag push `v*` — lint,
-      test, build, then `pnpm publish --no-git-checks` + `gh release
-create --generate-notes`
-- [ ] `release-it` config (`.release-it.json` or package.json field):
-      conventional-changelog/angular preset, `npm.publish: false`,
-      `github.release: false` (npm/gh publish deferred to tag-triggered CI)
-- [ ] `pnpm release` local script to bump version + tag + push
+- [x] `.github/actions/setup/action.yml`: converted from the scaffold's
+      yarn-based version to pnpm (`pnpm/action-setup`, `setup-node` with
+      `cache: pnpm`, `pnpm install --frozen-lockfile`) — matches
+      yubikit's exact pattern
+- [x] `.github/workflows/ci.yml`: `lint` (oxlint + format:check +
+      typecheck), `test` (jest), `build-library` (bob build), plus
+      `build-android`/`build-ios` (Expo prebuild + Gradle/xcodebuild,
+      turbo-cached) and a `build-web` job. **Deviation, deliberately
+      matching your own established pattern in yubikit/pdf-editor:**
+      `build-android`/`build-ios` are disabled by default (`if: false`)
+      since native builds burn CI-runner quota fast — flip that line to
+      re-enable once you want native-build coverage on every push/PR. We
+      already validated both platforms build correctly by hand in
+      groups 2/3/7, so this isn't masking an unknown
+- [x] `.github/workflows/release.yml`: triggered on tag push `v*` — lint,
+      format check, typecheck, test, build, then publishes to npm and
+      creates a GitHub release with auto-generated notes
+- [x] `release-it` config in `package.json`: `npm.publish: false`,
+      `github.release: false` — actual publish/release deferred to the
+      tag-triggered `release.yml`, so `pnpm release` (already wired to
+      `release-it --only-version`) just bumps the version, updates the
+      changelog, commits, tags, and pushes
+- [x] `pnpm release` script already existed from the scaffold
 
-### 9. Docs & cleanup
+### 9. Docs & cleanup — ✅ done
 
-- [ ] Rewrite `README.md`: autolinking-only install (no manual bridging
-      headers), new TypeScript API, example app usage, old/new arch note
-- [ ] Update screenshots/gif if the alert UI visuals change
-- [ ] Remove obsolete files: `Example-Bridging-Header.h`,
-      `ios/RNSweetAlert-Bridging-Header.h`, `ios/RNSweetAlert.xcodeproj`
-      (no longer needed once autolinked)
-- [ ] Sync version across `package.json`, podspec, `android/build.gradle`
-      (single source of truth — derive others from package.json where
-      possible)
-- [ ] `.npmignore` review (ship `lib/`, `src/`, native source; exclude
-      `example/`)
+- [x] Rewrote `README.md`: autolinking-only install, full TypeScript
+      API/options reference, alert-style and progress-style examples,
+      example-app pointer, old/new-arch note. Dropped the old duplicated
+      full MIT license text at the bottom (redundant with `LICENSE`)
+- [x] Removed `images/target.png` and `images/bridging-header.png`
+      (screenshots for the now-deleted manual Xcode bridging-header
+      steps — no longer referenced anywhere). **Left `images/demo.gif`
+      as-is** — it shows the old `cn.pedant`-style visuals, which no
+      longer match the rebuilt native UI (group 2/3). I can't capture a
+      new recording myself (no way to run/screen-record the simulator
+      from here) — you'll want to record a fresh one once you've run the
+      example app and are happy with the look
+- [x] Obsolete bridging-header files already removed in group 0
+      (`Example-Bridging-Header.h`, `ios/RNSweetAlert-Bridging-Header.h`,
+      `ios/RNSweetAlert.xcodeproj`)
+- [x] Version sync: turned out to already be structurally correct, not
+      just "synced" — the podspec reads its version directly from
+      `package.json` (no separate literal to drift), and
+      `android/build.gradle` doesn't declare a library version at all
+      (only apps need `versionName`/`versionCode`; this is a library
+      module). `package.json` is the only place a
+      version number is ever written now
+- [x] `.npmignore`/`files` allowlist: already reviewed and rewritten in
+      an earlier pass (before this group) — confirmed it matches the
+      reference repos' exact boilerplate, nothing further needed
 
 ### 10. Verification (final gate before calling this done)
 
