@@ -15,8 +15,6 @@ internal data class SweetAlertOptions(
   val progressBarColor: String?,
   val progressCircleRadius: Double?,
   val progressBarWidth: Double?,
-  val progressRimWidth: Double?,
-  val progressSpinSpeed: Double?,
 ) {
   companion object {
     fun from(map: ReadableMap): SweetAlertOptions = SweetAlertOptions(
@@ -32,8 +30,6 @@ internal data class SweetAlertOptions(
       progressBarColor = if (map.hasKey("progressBarColor")) map.getString("progressBarColor") else null,
       progressCircleRadius = if (map.hasKey("progressCircleRadius")) map.getDouble("progressCircleRadius") else null,
       progressBarWidth = if (map.hasKey("progressBarWidth")) map.getDouble("progressBarWidth") else null,
-      progressRimWidth = if (map.hasKey("progressRimWidth")) map.getDouble("progressRimWidth") else null,
-      progressSpinSpeed = if (map.hasKey("progressSpinSpeed")) map.getDouble("progressSpinSpeed") else null,
     )
   }
 }

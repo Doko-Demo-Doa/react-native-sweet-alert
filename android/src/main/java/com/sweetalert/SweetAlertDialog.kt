@@ -74,15 +74,20 @@ internal class SweetAlertDialog(
       }
     }
 
-    iconView.style = options.style
-    iconView.progress = options.progress
-    options.progressBarColor?.let { iconView.strokeColor = parseColor(it, Color.BLACK) }
-    options.progressBarWidth?.let { iconView.strokeWidthPx = dp(it).toFloat() }
-    val iconSize = options.progressCircleRadius?.let { dp(it * 2) } ?: dp(64)
-    card.addView(
-      iconView,
-      LinearLayout.LayoutParams(iconSize, iconSize).apply { bottomMargin = dp(16) },
-    )
+    // The 'normal' style has no icon, matching iOS (which skips the icon
+    // area entirely for any unrecognized style rather than showing an
+    // empty animated placeholder).
+    if (options.style != "normal") {
+      iconView.style = options.style
+      iconView.progress = options.progress
+      options.progressBarColor?.let { iconView.strokeColor = parseColor(it, Color.BLACK) }
+      options.progressBarWidth?.let { iconView.strokeWidthPx = dp(it).toFloat() }
+      val iconSize = options.progressCircleRadius?.let { dp(it * 2) } ?: dp(64)
+      card.addView(
+        iconView,
+        LinearLayout.LayoutParams(iconSize, iconSize).apply { bottomMargin = dp(16) },
+      )
+    }
 
     if (!options.title.isNullOrEmpty()) {
       card.addView(TextView(context).apply {
