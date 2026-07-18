@@ -115,5 +115,3 @@ pnpm example ios     # or: pnpm example android
 MIT
 
 ---
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
