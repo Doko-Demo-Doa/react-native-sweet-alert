@@ -1,9 +1,31 @@
 # react-native-sweet-alert
 
-Cute, native alert dialogs for React Native — success, error, warning, normal,
-and progress styles, on both the old and new architecture.
+Cute, native alert dialogs for React Native — success, error, warning, normal, and progress styles, on both the old and new architecture.
 
 ![Sweet Alert demo](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif 'Sweet Alert')
+
+[![npm version](https://img.shields.io/npm/v/react-native-sweet-alert?style=for-the-badge&color=blue)](https://www.npmjs.com/package/react-native-sweet-alert)
+[![Monthly downloads](https://img.shields.io/npm/dm/react-native-sweet-alert?style=for-the-badge)](https://www.npmjs.com/package/react-native-sweet-alert)
+[![Architecture](https://img.shields.io/badge/Architecture-Old%20%2B%20New-5f3dc4?style=for-the-badge)](https://reactnative.dev/docs/the-new-architecture/landing-page)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Supported-3178C6?style=for-the-badge)](https://www.typescriptlang.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2f9e44?style=for-the-badge)](LICENSE)
+[![iOS](https://img.shields.io/badge/iOS-15%2B-000000?style=for-the-badge&logo=apple)](https://developer.apple.com/ios/)
+[![Android](https://img.shields.io/badge/Android-API%2024%2B-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://developer.android.com/)
+
+---
+
+## Features
+
+- 🎨 **Five alert styles** - `success`, `error`, `warning`, `normal`, `progress`
+- 📊 **Progress style** - determinate (with a `setProgress()` ticker) or indeterminate spinner
+- 🧵 **Promise-based API** - `await showAlert(options)` resolves `{ confirmed: boolean }`
+- 👆 **Cancellable** - optional tap-outside-to-dismiss on any style
+- 🖌️ **Themeable buttons and colors** - per-alert hex colors for confirm/other buttons and the progress bar
+- 🌓 **Dark mode aware** - card background and text adapt automatically on both platforms
+- 🧩 **Old + New Architecture** - a single TurboModule spec, Codegen-generated for both
+- 🔒 **Fully typed** - written in TypeScript, no `@types` package needed
+
+---
 
 ## Installation
 
@@ -11,14 +33,11 @@ and progress styles, on both the old and new architecture.
 npm install react-native-sweet-alert
 ```
 
-Autolinking handles the rest — no manual bridging headers, no
-`AndroidManifest.xml` edits. Works with both the old and the new React
-Native architecture (TurboModules), so there's nothing to configure either
-way.
+Autolinking handles the rest — no manual bridging headers, no `AndroidManifest.xml` edits.
 
 ## Usage
 
-```ts
+```js
 import SweetAlert from 'react-native-sweet-alert';
 
 const result = await SweetAlert.showAlert({
@@ -28,22 +47,14 @@ const result = await SweetAlert.showAlert({
   confirmButtonTitle: 'OK',
 });
 
-// result.confirmed is `true` if the confirm button was pressed,
-// `false` if the other button was pressed, the alert was dismissed
-// (cancellable), or dismissAlert() was called.
-```
-
-You can also import the named functions directly:
-
-```ts
-import { showAlert, dismissAlert, setProgress } from 'react-native-sweet-alert';
+// result.confirmed is `true`/`false` depending on which button was pressed.
 ```
 
 ### Alert styles
 
 `style` is one of `'success' | 'error' | 'warning' | 'normal' | 'progress'`.
 
-```ts
+```js
 await showAlert({
   style: 'warning',
   title: 'Are you sure?',
@@ -55,12 +66,11 @@ await showAlert({
 });
 ```
 
-Set `cancellable: true` to let the user dismiss the alert by tapping outside
-it (resolves with `{ confirmed: false }`).
+Set `cancellable: true` to let the user dismiss the alert by tapping outside it (resolves with `{ confirmed: false }`).
 
 ### Progress style
 
-```ts
+```js
 await showAlert({
   style: 'progress',
   title: 'Uploading…',
@@ -96,8 +106,7 @@ dismissAlert(); // dismiss it programmatically when done
 
 ## Example app
 
-See [`example/`](example) for a runnable Expo app exercising every alert
-style. From the repo root:
+See [`example/`](example) for a runnable Expo app exercising every alert style. From the repo root:
 
 ```sh
 pnpm install
@@ -115,3 +124,5 @@ pnpm example ios     # or: pnpm example android
 MIT
 
 ---
+
+Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
