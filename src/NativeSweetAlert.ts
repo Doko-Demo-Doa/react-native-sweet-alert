@@ -20,8 +20,6 @@ export interface AlertOptions {
   progressBarColor?: string;
   progressCircleRadius?: number;
   progressBarWidth?: number;
-  progressRimWidth?: number;
-  progressSpinSpeed?: number;
 }
 
 export interface AlertResult {

@@ -1,6 +1,6 @@
 # react-native-sweet-alert
 
-Cute, native alert dialogs for React Native — success, error, warning, normal, and progress styles, built on the New Architecture (TurboModules).
+Cute, native alert dialogs for React Native - success, error, warning, normal, and progress styles, built on the New Architecture (TurboModules).
 
 ![Sweet Alert demo](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif 'Sweet Alert')
 
@@ -30,7 +30,7 @@ Cute, native alert dialogs for React Native — success, error, warning, normal,
 ## Requirements
 
 - React Native 0.86+ with the **New Architecture** (the only architecture RN
-  itself supports as of 0.82 — there's no legacy-bridge fallback here).
+  itself supports as of 0.82 - there's no legacy-bridge fallback here).
 - iOS 15+, Android API 24+.
 
 ## Installation
@@ -39,7 +39,7 @@ Cute, native alert dialogs for React Native — success, error, warning, normal,
 npm install react-native-sweet-alert
 ```
 
-Autolinking handles the rest — no manual bridging headers, no `AndroidManifest.xml` edits.
+Autolinking handles the rest - no manual bridging headers, no `AndroidManifest.xml` edits.
 
 ## Usage
 
@@ -79,12 +79,11 @@ Set `cancellable: true` to let the user dismiss the alert by tapping outside it 
 ```js
 await showAlert({
   style: 'progress',
-  title: 'Uploading…',
+  title: 'Uploading...',
   progress: 0, // omit for an indeterminate spinner
   progressBarColor: '#4A90D9',
   progressCircleRadius: 36,
   progressBarWidth: 6,
-  progressRimWidth: 6,
 });
 
 setProgress(50); // update the same alert's progress later
@@ -107,8 +106,6 @@ dismissAlert(); // dismiss it programmatically when done
 | `progressBarColor`     | `string`  | `progress` style only                                     |
 | `progressCircleRadius` | `number`  | `progress` style only, in dp/pt                           |
 | `progressBarWidth`     | `number`  | `progress` style only, in dp/pt                           |
-| `progressRimWidth`     | `number`  | `progress` style only, in dp/pt (Android)                 |
-| `progressSpinSpeed`    | `number`  | `progress` style only (Android)                           |
 
 ## Example app
 

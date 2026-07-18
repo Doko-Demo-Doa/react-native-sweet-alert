@@ -11,8 +11,8 @@ RCT_EXPORT_MODULE(SweetAlert)
 {
     // TurboModule methods run on a background queue by default, but
     // SweetAlertBridge/SweetAlertView touch UIKit (addSubview, layout).
-    // Extract the C++ struct's fields synchronously here — `options` is a
-    // reference into caller-owned stack memory, not valid once we return —
+    // Extract the C++ struct's fields synchronously here - `options` is a
+    // reference into caller-owned stack memory, not valid once we return -
     // then hop to the main queue for the actual UI work.
     NSString *title = options.title();
     NSString *subTitle = options.subTitle();
@@ -25,20 +25,22 @@ RCT_EXPORT_MODULE(SweetAlert)
     NSNumber *progress = options.progress() ? @(*options.progress()) : nil;
     NSString *progressBarColor = options.progressBarColor();
     NSNumber *progressBarWidth = options.progressBarWidth() ? @(*options.progressBarWidth()) : nil;
+    NSNumber *progressCircleRadius = options.progressCircleRadius() ? @(*options.progressCircleRadius()) : nil;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [SweetAlertBridge presentWithTitle:title
-                                  subTitle:subTitle
-                                     style:style
-                        confirmButtonTitle:confirmButtonTitle
-                        confirmButtonColor:confirmButtonColor
-                          otherButtonTitle:otherButtonTitle
-                          otherButtonColor:otherButtonColor
-                               cancellable:cancellable
-                                  progress:progress
-                          progressBarColor:progressBarColor
-                          progressBarWidth:progressBarWidth
-                                completion:^(BOOL confirmed) {
+                                     subTitle:subTitle
+                                        style:style
+                           confirmButtonTitle:confirmButtonTitle
+                           confirmButtonColor:confirmButtonColor
+                             otherButtonTitle:otherButtonTitle
+                             otherButtonColor:otherButtonColor
+                                  cancellable:cancellable
+                                     progress:progress
+                             progressBarColor:progressBarColor
+                             progressBarWidth:progressBarWidth
+                        progressCircleRadius:progressCircleRadius
+                                   completion:^(BOOL confirmed) {
             resolve(@{ @"confirmed": @(confirmed) });
         }];
     });

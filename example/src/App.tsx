@@ -80,12 +80,11 @@ export default function App() {
         stopProgressTimer();
         runAlert({
           style: 'progress',
-          title: 'Uploading…',
+          title: 'Uploading...',
           progress: 0,
           progressBarColor: '#4A90D9',
           progressCircleRadius: 36,
           progressBarWidth: 6,
-          progressRimWidth: 6,
         });
 
         let progress = 0;
@@ -104,8 +103,7 @@ export default function App() {
       onPress: () =>
         runAlert({
           style: 'progress',
-          title: 'Loading…',
-          progressSpinSpeed: 1,
+          title: 'Loading...',
         }),
     },
     {

@@ -25,8 +25,6 @@ export interface ProgressAlertOptions extends BaseAlertOptions {
   progressBarColor?: string;
   progressCircleRadius?: number;
   progressBarWidth?: number;
-  progressRimWidth?: number;
-  progressSpinSpeed?: number;
 }
 
 export type SweetAlertOptions = StandardAlertOptions | ProgressAlertOptions;

@@ -22,10 +22,9 @@ open class SweetAlertView: UIViewController {
   private let kHeightMargin: CGFloat = 10.0
   private let kTopMargin: CGFloat = 20.0
   private let kWidthMargin: CGFloat = 10.0
-  private let kAnimatedViewHeight: CGFloat = 70.0
+  private var kAnimatedViewHeight: CGFloat = 70.0
   private let kMaxHeight: CGFloat = 300.0
   private var kContentWidth: CGFloat = 300.0
-  private let kButtonHeight: CGFloat = 35.0
   private var textViewHeight: CGFloat = 90.0
   private let kTitleHeight: CGFloat = 30.0
   private let kFont = "Helvetica"
@@ -262,6 +261,7 @@ open class SweetAlertView: UIViewController {
     progress: Double?,
     progressBarColor: UIColor?,
     progressBarWidth: Double?,
+    progressCircleRadius: Double?,
     action: @escaping (_ isOtherButton: Bool) -> Void
   ) {
     current?.closeAlert(-1)
@@ -301,6 +301,9 @@ open class SweetAlertView: UIViewController {
       }
       if let progressBarWidth {
         progressView.barWidth = CGFloat(progressBarWidth)
+      }
+      if let progressCircleRadius {
+        alert.kAnimatedViewHeight = CGFloat(progressCircleRadius) * 2
       }
       alert.animatedView = progressView
     case .none:
@@ -714,6 +717,7 @@ public final class SweetAlertBridge: NSObject {
     progress: NSNumber?,
     progressBarColor: String?,
     progressBarWidth: NSNumber?,
+    progressCircleRadius: NSNumber?,
     completion: @escaping (Bool) -> Void
   ) {
     let convertedStyle: AlertStyle
@@ -737,6 +741,7 @@ public final class SweetAlertBridge: NSObject {
       progress: progress?.doubleValue,
       progressBarColor: progressBarColor.flatMap { UIColor(hexString: $0) },
       progressBarWidth: progressBarWidth?.doubleValue,
+      progressCircleRadius: progressCircleRadius?.doubleValue,
       action: completion
     )
   }
