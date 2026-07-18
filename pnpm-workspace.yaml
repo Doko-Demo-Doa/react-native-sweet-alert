@@ -1,0 +1,22 @@
+packages:
+  - example
+
+nodeLinker: hoisted
+autoInstallPeers: true
+strictPeerDependencies: false
+
+allowBuilds:
+  lefthook: true
+
+patchedDependencies:
+  '@expo/metro-config': patches/@expo__metro-config.patch
+
+minimumReleaseAgeExclude:
+  - '@expo/cli@57.0.9'
+  - '@expo/metro-config@57.0.6'
+  - '@expo/prebuild-config@57.0.8'
+  - expo-asset@57.0.6
+  - expo-constants@57.0.6
+  - expo-modules-autolinking@57.0.8
+  - expo-modules-core@57.0.6
+  - expo@57.0.7

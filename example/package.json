@@ -1,0 +1,31 @@
+{
+  "name": "react-native-sweet-alert-example",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "build:ios": "xcodebuild ONLY_ACTIVE_ARCH=YES -workspace ios/SweetAlertExample.xcworkspace -UseNewBuildSystem=YES -scheme SweetAlertExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet",
+    "build:android": "cd android && ./gradlew assembleDebug -DtestBuildType=debug -Dorg.gradle.jvmargs=-Xmx4g",
+    "build:web": "expo export --platform web"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.3",
+    "expo": "~57.0.7",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.0",
+    "react-native-web": "~0.21.2"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "expo-dev-client": "~57.0.5",
+    "react-native-builder-bob": "^0.43.0",
+    "react-native-monorepo-config": "^0.4.0",
+    "typescript": "~6.0.3"
+  }
+}

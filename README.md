@@ -1,141 +1,117 @@
+# react-native-sweet-alert
 
-# React Native Sweet Alert
+Cute, native alert dialogs for React Native — success, error, warning, normal,
+and progress styles, on both the old and new architecture.
 
-### Cute sweet alert for your app and your day.
+![Sweet Alert demo](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif 'Sweet Alert')
 
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif "Sweet Alert")
+## Installation
 
-## Getting started
-
-`$ npm install react-native-sweet-alert --save`
-
-### Mostly automatic installation
-
-`$ react-native link react-native-sweet-alert`
-
-### Manual installation
-
-# On Android:
-
-__In the AndroidManifest.xml file__
-
-Below this line:
-
-`
-xmlns:android="http://schemas.android.com/apk/res/android"
-`
-
-add this:
-
-`
-xmlns:tools="http://schemas.android.com/tools"
-`
-
-And in the `<application>` tag, add this property:
-
-`
-tools:replace="android:icon"
-`
-
-so it will look like:
-
-```
-<application
-  android:name=".MainApplication"
-  android:allowBackup="true"
-  android:label="@string/app_name"
-  android:icon="@mipmap/ic_launcher"
-  tools:replace="android:icon"
-  android:theme="@style/AppTheme">
+```sh
+npm install react-native-sweet-alert
 ```
 
-# On iOS:
+Autolinking handles the rest — no manual bridging headers, no
+`AndroidManifest.xml` edits. Works with both the old and the new React
+Native architecture (TurboModules), so there's nothing to configure either
+way.
 
-Since the vendor library is written in Swift, apart from doing usual `react-native link react-native-sweet-alert`, you will also have to create a Bridging Header for Swift file, which is also pretty easy:
+## Usage
 
-- ou have to create at least a `.swift` file in your project. It can be an empty Swift file, but it must exist. After that, XCode will ask you to "Create bridging header?" which enables Swift Bridging Header in Build Settings below.
-
-- Open the project with XCode (don't forget to open XCode, since using other editors won't be enough), create a new `.h` file. I recommend to create something like `<Your-App-Name>-Bridging-Header.h` , for example, if your app is named `CuteApp`, then it should be `CuteApp-Bridging-Header.h`
-
-- Paste in following code into that newly created `.h` file:
-
-````
-#import <React/RCTBridgeModule.h>
-#import <React/RCTEventEmitter.h>
-#import <React/RCTViewManager.h>
-#import <React/RCTConvert.h>
-#import <React/RCTUtils.h>
-````
-
-Or you can just see `Example-Bridging-Header.h` and copy and paste in.
-
-- In XCode, make sure you chose your app target. Go to `Build Settings`:
-
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/target.png "Sweet Alert")
-
-- Now to the important part: In `Objective-C Bridging Header`, double-click on it and type in your created `.h` file earlier. In the above example it is `CuteApp-Bridging-Header.h`.
-
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/bridging-header.png "Sweet Alert")
-
-- Make sure the path is relative. For example, if `CuteApp-Bridging-Header.h` is in `ios` folder, you only have to type `CuteApp-Bridging-Header.h` , but if it's in a sub-folder, you have to add the path too, e.g: `some-path/CuteApp-Bridging-Header.h`.
-
-- In `Swift Language Version`, choose `4.2`. Yeah I had to convert the syntax of original library from Swift 2 to Swift 4.
-
-
-__And then you can use the library like so:__
-
-```
+```ts
 import SweetAlert from 'react-native-sweet-alert';
-```
 
-```
-SweetAlert.showAlertWithOptions({
-  title: '',
-  subTitle: '',
-  confirmButtonTitle: 'OK',
-  confirmButtonColor: '#000',
-  otherButtonTitle: 'Cancel',
-  otherButtonColor: '#dedede',
+const result = await SweetAlert.showAlert({
   style: 'success',
-  cancellable: true
-},
-  callback => console.log('callback'));
+  title: 'Great job!',
+  subTitle: 'Everything went smoothly.',
+  confirmButtonTitle: 'OK',
+});
+
+// result.confirmed is `true` if the confirm button was pressed,
+// `false` if the other button was pressed, the alert was dismissed
+// (cancellable), or dismissAlert() was called.
 ```
 
-- The first parameter is dialog option with above available properties. Please note that `confirmButtonColor` and `otherButtonColor` is only available on iOS.
+You can also import the named functions directly:
 
-- The second parameter is callback, which returns a boolean value. Use it as you wish.
+```ts
+import { showAlert, dismissAlert, setProgress } from 'react-native-sweet-alert';
+```
 
-### With the dialog in progress mode, we also have following methods available (Android Only):
+### Alert styles
 
-`resetCount()` Reset the counter of the progress.
+`style` is one of `'success' | 'error' | 'warning' | 'normal' | 'progress'`.
 
-`isSpinning(): Promise` Get spinning status of the progress bar.
+```ts
+await showAlert({
+  style: 'warning',
+  title: 'Are you sure?',
+  subTitle: "This can't be undone.",
+  confirmButtonTitle: 'Delete',
+  confirmButtonColor: '#F27474',
+  otherButtonTitle: 'Cancel',
+  otherButtonColor: '#8CC152',
+});
+```
 
-`spin():` Start spinning.
+Set `cancellable: true` to let the user dismiss the alert by tapping outside
+it (resolves with `{ confirmed: false }`).
 
-`setBarColor(type: string)` Changes the progress bar color. Argument must be a hex color string like `#ff0000`
+### Progress style
 
-# LICENSE
+```ts
+await showAlert({
+  style: 'progress',
+  title: 'Uploading…',
+  progress: 0, // omit for an indeterminate spinner
+  progressBarColor: '#4A90D9',
+  progressCircleRadius: 36,
+  progressBarWidth: 6,
+  progressRimWidth: 6,
+});
 
-MIT License
+setProgress(50); // update the same alert's progress later
+dismissAlert(); // dismiss it programmatically when done
+```
 
-Copyright (c) 2018 Clip-sub
+### Full options reference
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+| Option                 | Type      | Notes                                                     |
+| ---------------------- | --------- | --------------------------------------------------------- |
+| `style`                | `string`  | Required. `success`/`error`/`warning`/`normal`/`progress` |
+| `title`                | `string`  |                                                           |
+| `subTitle`             | `string`  |                                                           |
+| `confirmButtonTitle`   | `string`  |                                                           |
+| `confirmButtonColor`   | `string`  | Hex color, e.g. `#4A90D9`                                 |
+| `otherButtonTitle`     | `string`  | Omit to show a single-button alert                        |
+| `otherButtonColor`     | `string`  | Hex color                                                 |
+| `cancellable`          | `boolean` | Tap outside to dismiss                                    |
+| `progress`             | `number`  | 0-100; `progress` style only. Omit for indeterminate      |
+| `progressBarColor`     | `string`  | `progress` style only                                     |
+| `progressCircleRadius` | `number`  | `progress` style only, in dp/pt                           |
+| `progressBarWidth`     | `number`  | `progress` style only, in dp/pt                           |
+| `progressRimWidth`     | `number`  | `progress` style only, in dp/pt (Android)                 |
+| `progressSpinSpeed`    | `number`  | `progress` style only (Android)                           |
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+## Example app
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+See [`example/`](example) for a runnable Expo app exercising every alert
+style. From the repo root:
+
+```sh
+pnpm install
+pnpm example ios     # or: pnpm example android
+```
+
+## Contributing
+
+- [Development workflow](CONTRIBUTING.md#development-workflow)
+- [Sending a pull request](CONTRIBUTING.md#sending-a-pull-request)
+- [Code of conduct](CODE_OF_CONDUCT.md)
+
+## License
+
+MIT
+
+---

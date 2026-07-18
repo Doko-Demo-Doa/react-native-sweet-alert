@@ -1,3 +1,60 @@
-.gif
+# package.json's "files" allowlist is the actual source of truth for what gets
+# published - this is a backstop in case that list is ever loosened, and for
+# tools that don't honor "files" (e.g. a raw `npm pack` outside this repo's
+# publish flow).
+
+# Example app - not part of the published package
+example/
+
+# Docs/config not needed at runtime
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+PLAN.md
 images/
-.png
+.github/
+.vscode/
+.editorconfig
+.watchmanconfig
+lefthook.yml
+turbo.json
+tsconfig.json
+tsconfig.build.json
+
+# Lint/format
+.oxlintrc.json
+.oxfmtrc.json
+
+# Tests
+__tests__/
+__fixtures__/
+__mocks__/
+*.test.ts
+*.test.tsx
+coverage/
+
+# Native build artifacts
+android/build/
+android/.gradle/
+android/gradle/
+android/gradlew
+android/gradlew.bat
+android/local.properties
+ios/build/
+ios/Pods/
+cpp/build/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+
+# Editor/OS junk
+.DS_Store
+.idea/
+*.log
+
+# Env/secrets
+.env
+.env.*
+
+# VCS internals
+.git/
+.gitignore
+.gitattributes
