@@ -1,21 +1,21 @@
 {
   "name": "react-native-sweet-alert",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "description": "React Native wrapper for SweetAlert-style dialogs (iOS & Android)",
   "keywords": [
     "android",
     "ios",
     "react-native"
   ],
-  "homepage": "https://github.com/dokme/react-native-sweet-alert#readme",
+  "homepage": "https://github.com/Doko-Demo-Doa/react-native-sweet-alert#readme",
   "bugs": {
-    "url": "https://github.com/dokme/react-native-sweet-alert/issues"
+    "url": "https://github.com/Doko-Demo-Doa/react-native-sweet-alert/issues"
   },
   "license": "MIT",
-  "author": "Quan Pham <quan@margelo.com> (https://github.com/dokme)",
+  "author": "Quan Pham <quan@margelo.com> (https://github.com/Doko-Demo-Doa)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dokme/react-native-sweet-alert.git"
+    "url": "git+https://github.com/Doko-Demo-Doa/react-native-sweet-alert.git"
   },
   "files": [
     "src",
