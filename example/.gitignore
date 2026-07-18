@@ -2,5 +2,8 @@
 android/
 ios/
 
-# Ruby bundler local state (CocoaPods Gemfile.lock management)
-.bundle/
+# Expo
+.expo/
+
+# Web export output
+dist/

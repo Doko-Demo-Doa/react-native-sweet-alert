@@ -2,15 +2,20 @@
   "name": "react-native-sweet-alert",
   "version": "0.1.0",
   "description": "React Native wrapper for SweetAlert-style dialogs (iOS & Android)",
-  "main": "./lib/module/index.js",
-  "types": "./lib/typescript/src/index.d.ts",
-  "exports": {
-    ".": {
-      "react-native-sweet-alert-source": "./src/index.tsx",
-      "types": "./lib/typescript/src/index.d.ts",
-      "default": "./lib/module/index.js"
-    },
-    "./package.json": "./package.json"
+  "keywords": [
+    "android",
+    "ios",
+    "react-native"
+  ],
+  "homepage": "https://github.com/dokme/react-native-sweet-alert#readme",
+  "bugs": {
+    "url": "https://github.com/dokme/react-native-sweet-alert/issues"
+  },
+  "license": "MIT",
+  "author": "Quan Pham <quan@margelo.com> (https://github.com/dokme)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dokme/react-native-sweet-alert.git"
   },
   "files": [
     "src",
@@ -31,31 +36,30 @@
     "!**/__mocks__",
     "!**/.*"
   ],
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "exports": {
+    ".": {
+      "react-native-sweet-alert-source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "example": "pnpm --filter react-native-sweet-alert-example",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "typecheck": "tsc",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "test": "jest",
     "release": "release-it --only-version"
-  },
-  "keywords": [
-    "react-native",
-    "ios",
-    "android"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dokme/react-native-sweet-alert.git"
-  },
-  "author": "Quan Pham <quan@margelo.com> (https://github.com/dokme)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/dokme/react-native-sweet-alert/issues"
-  },
-  "homepage": "https://github.com/dokme/react-native-sweet-alert#readme",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^21.0.2",
@@ -68,6 +72,8 @@
     "del-cli": "^7.0.0",
     "jest": "^29.7.0",
     "lefthook": "^2.1.9",
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0",
     "react": "19.2.3",
     "react-native": "0.86.0",
     "react-native-builder-bob": "^0.43.0",
@@ -79,7 +85,49 @@
     "react": "*",
     "react-native": "*"
   },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ],
+    "preset": "@react-native/jest-preset",
+    "testEnvironmentOptions": {
+      "customExportConditions": [
+        "require",
+        "react-native",
+        "<%- project.sourceCondition -%>"
+      ]
+    }
+  },
   "packageManager": "pnpm@11.13.1",
+  "codegenConfig": {
+    "name": "SweetAlertSpec",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "ios": {
+      "modulesProvider": {
+        "SweetAlert": "SweetAlert"
+      }
+    },
+    "android": {
+      "javaPackageName": "com.sweetalert"
+    }
+  },
+  "create-react-native-library": {
+    "type": "turbo-module",
+    "languages": "kotlin-objc",
+    "tools": [
+      "jest",
+      "lefthook",
+      "release-it"
+    ],
+    "version": "0.63.0"
+  },
   "react-native-builder-bob": {
     "source": "src",
     "output": "lib",
@@ -96,38 +144,6 @@
           "project": "tsconfig.build.json"
         }
       ]
-    ]
-  },
-  "codegenConfig": {
-    "name": "SweetAlertSpec",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "ios": {
-      "modulesProvider": {
-        "SweetAlert": "SweetAlert"
-      }
-    },
-    "android": {
-      "javaPackageName": "com.sweetalert"
-    }
-  },
-  "jest": {
-    "preset": "@react-native/jest-preset",
-    "testEnvironmentOptions": {
-      "customExportConditions": [
-        "require",
-        "react-native",
-        "<%- project.sourceCondition -%>"
-      ]
-    },
-    "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/lib/"
-    ]
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
     ]
   },
   "release-it": {
@@ -148,15 +164,5 @@
         }
       }
     }
-  },
-  "create-react-native-library": {
-    "type": "turbo-module",
-    "languages": "kotlin-objc",
-    "tools": [
-      "jest",
-      "lefthook",
-      "release-it"
-    ],
-    "version": "0.63.0"
   }
 }

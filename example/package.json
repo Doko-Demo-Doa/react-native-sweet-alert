@@ -1,33 +1,31 @@
 {
   "name": "react-native-sweet-alert-example",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
+  "main": "index.ts",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "build:android": "react-native build-android --extra-params \"--no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a\"",
-    "build:ios": "react-native build-ios --mode Debug"
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "build:ios": "xcodebuild ONLY_ACTIVE_ARCH=YES -workspace ios/SweetAlertExample.xcworkspace -UseNewBuildSystem=YES -scheme SweetAlertExample -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -quiet",
+    "build:android": "cd android && ./gradlew assembleDebug -DtestBuildType=debug -Dorg.gradle.jvmargs=-Xmx4g",
+    "build:web": "expo export --platform web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~57.0.3",
+    "expo": "~57.0.7",
+    "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
-    "react-native": "0.86.0"
+    "react-dom": "19.2.3",
+    "react-native": "0.86.0",
+    "react-native-web": "~0.21.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.3",
-    "@babel/runtime": "^7.25.0",
-    "@react-native-community/cli": "20.1.0",
-    "@react-native-community/cli-platform-android": "20.1.0",
-    "@react-native-community/cli-platform-ios": "20.1.0",
-    "@react-native/babel-preset": "0.86.0",
-    "@react-native/metro-config": "0.86.0",
-    "@react-native/typescript-config": "0.86.0",
-    "@types/react": "^19.2.0",
+    "@types/react": "~19.2.2",
+    "expo-dev-client": "~57.0.5",
     "react-native-builder-bob": "^0.43.0",
-    "react-native-monorepo-config": "^0.4.0"
-  },
-  "engines": {
-    "node": ">= 22.11.0"
+    "react-native-monorepo-config": "^0.4.0",
+    "typescript": "~6.0.3"
   }
 }

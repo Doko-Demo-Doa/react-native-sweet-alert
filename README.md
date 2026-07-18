@@ -1,9 +1,8 @@
-
 # React Native Sweet Alert
 
 ### Cute sweet alert for your app and your day.
 
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif "Sweet Alert")
+![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/demo.gif 'Sweet Alert')
 
 ## Getting started
 
@@ -17,25 +16,19 @@
 
 # On Android:
 
-__In the AndroidManifest.xml file__
+**In the AndroidManifest.xml file**
 
 Below this line:
 
-`
-xmlns:android="http://schemas.android.com/apk/res/android"
-`
+`xmlns:android="http://schemas.android.com/apk/res/android"`
 
 add this:
 
-`
-xmlns:tools="http://schemas.android.com/tools"
-`
+`xmlns:tools="http://schemas.android.com/tools"`
 
 And in the `<application>` tag, add this property:
 
-`
-tools:replace="android:icon"
-`
+`tools:replace="android:icon"`
 
 so it will look like:
 
@@ -59,30 +52,29 @@ Since the vendor library is written in Swift, apart from doing usual `react-nati
 
 - Paste in following code into that newly created `.h` file:
 
-````
+```
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 #import <React/RCTViewManager.h>
 #import <React/RCTConvert.h>
 #import <React/RCTUtils.h>
-````
+```
 
 Or you can just see `Example-Bridging-Header.h` and copy and paste in.
 
 - In XCode, make sure you chose your app target. Go to `Build Settings`:
 
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/target.png "Sweet Alert")
+![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/target.png 'Sweet Alert')
 
 - Now to the important part: In `Objective-C Bridging Header`, double-click on it and type in your created `.h` file earlier. In the above example it is `CuteApp-Bridging-Header.h`.
 
-![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/bridging-header.png "Sweet Alert")
+![alt text](https://raw.githubusercontent.com/Clip-sub/react-native-sweet-alert/master/images/bridging-header.png 'Sweet Alert')
 
 - Make sure the path is relative. For example, if `CuteApp-Bridging-Header.h` is in `ios` folder, you only have to type `CuteApp-Bridging-Header.h` , but if it's in a sub-folder, you have to add the path too, e.g: `some-path/CuteApp-Bridging-Header.h`.
 
 - In `Swift Language Version`, choose `4.2`. Yeah I had to convert the syntax of original library from Swift 2 to Swift 4.
 
-
-__And then you can use the library like so:__
+**And then you can use the library like so:**
 
 ```
 import SweetAlert from 'react-native-sweet-alert';

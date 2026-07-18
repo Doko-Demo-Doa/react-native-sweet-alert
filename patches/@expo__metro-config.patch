@@ -1,0 +1,18 @@
+diff --git a/build/babel-transformer.js b/build/babel-transformer.js
+index 6dac8e4659d79e11ef7cc48f741091ef8c5d772e..401d4274b05673e2154798fb1dae0e131e0dd27e 100644
+--- a/build/babel-transformer.js
++++ b/build/babel-transformer.js
+@@ -190,6 +190,13 @@ function getCacheKey(options) {
+     const partialConfig = (0, babel_core_1.loadPartialConfigSync)({
+         cwd: options.projectRoot,
+         root: options.projectRoot,
++        // A filename is required so Babel can evaluate string/RegExp
++        // `overrides[].include`/`exclude`/`test` patterns (e.g. from
++        // react-native-builder-bob's babel config) without throwing
++        // "Configuration contains string/RegExp pattern, but no filename
++        // was passed to Babel". This file need not exist; it's only used
++        // for pattern matching while resolving which config files apply.
++        filename: node_path_1.default.join(options.projectRoot, '__metro_cache_key_probe__.js'),
+         extends: node_path_1.default.resolve(options.projectRoot, configName),
+         configFile: false,
+         babelrc: false,

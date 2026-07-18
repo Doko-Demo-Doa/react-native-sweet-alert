@@ -1,6 +1,11 @@
 import { TurboModuleRegistry, type TurboModule } from 'react-native';
 
-export type AlertStyle = 'success' | 'error' | 'warning' | 'normal' | 'progress';
+export type AlertStyle =
+  | 'success'
+  | 'error'
+  | 'warning'
+  | 'normal'
+  | 'progress';
 
 export interface AlertOptions {
   style: AlertStyle;
