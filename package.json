@@ -1,6 +1,6 @@
 {
   "name": "react-native-sweet-alert",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "React Native wrapper for SweetAlert-style dialogs (iOS & Android)",
   "keywords": [
     "android",
