@@ -6,7 +6,7 @@ Cute, native alert dialogs for React Native — success, error, warning, normal,
 
 [![npm version](https://img.shields.io/npm/v/react-native-sweet-alert?style=for-the-badge&color=blue)](https://www.npmjs.com/package/react-native-sweet-alert)
 [![Monthly downloads](https://img.shields.io/npm/dm/react-native-sweet-alert?style=for-the-badge)](https://www.npmjs.com/package/react-native-sweet-alert)
-[![Architecture](<https://img.shields.io/badge/Architecture-New%20(TurboModules)-5f3dc4?style=for-the-badge>)](https://reactnative.dev/docs/the-new-architecture/landing-page)
+[![Architecture](https://img.shields.io/badge/Architecture-New%20%28TurboModules%29-5f3dc4?style=for-the-badge)](https://reactnative.dev/docs/the-new-architecture/landing-page)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Supported-3178C6?style=for-the-badge)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-2f9e44?style=for-the-badge)](LICENSE)
 [![iOS](https://img.shields.io/badge/iOS-15%2B-000000?style=for-the-badge&logo=apple)](https://developer.apple.com/ios/)
