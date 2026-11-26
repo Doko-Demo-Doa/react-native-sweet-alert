@@ -6,13 +6,13 @@ autoInstallPeers: true
 strictPeerDependencies: false
 
 allowBuilds:
-  "@parcel/watcher": true
+  '@parcel/watcher': true
   lefthook: true
 
 minimumReleaseAgeExclude:
-  - "@expo/cli@57.0.9"
-  - "@expo/metro-config@57.0.6"
-  - "@expo/prebuild-config@57.0.8"
+  - '@expo/cli@57.0.9'
+  - '@expo/metro-config@57.0.6'
+  - '@expo/prebuild-config@57.0.8'
   - expo-asset@57.0.6
   - expo-constants@57.0.6
   - expo-modules-autolinking@57.0.8
