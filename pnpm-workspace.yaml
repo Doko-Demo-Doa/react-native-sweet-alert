@@ -9,12 +9,12 @@ allowBuilds:
   lefthook: true
 
 patchedDependencies:
-  '@expo/metro-config': patches/@expo__metro-config.patch
+  "@expo/metro-config": patches/@expo__metro-config.patch
 
 minimumReleaseAgeExclude:
-  - '@expo/cli@57.0.9'
-  - '@expo/metro-config@57.0.6'
-  - '@expo/prebuild-config@57.0.8'
+  - "@expo/cli@57.0.9"
+  - "@expo/metro-config@57.0.6"
+  - "@expo/prebuild-config@57.0.8"
   - expo-asset@57.0.6
   - expo-constants@57.0.6
   - expo-modules-autolinking@57.0.8
@@ -35,5 +35,6 @@ overrides:
   minimatch: 11.0.1
   qs: 6.16.1
   shell-quote: 1.11.0
+  test-exclude: 8.0.0
   tinypool: 2.1.2
   undici: 7.30.1
